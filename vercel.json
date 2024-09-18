@@ -3,12 +3,7 @@
     "builds": [
         {
             "src": "src/main.ts",
-            "use": "@vercel/node",
-            "config": {
-                "runtime": "nodejs22.7.x",
-                "buildCommand": "npm run build",
-                "outputDirectory": "dist"
-            }
+            "use": "@vercel/node"
         }
     ],
     "routes": [
@@ -28,4 +23,4 @@
             }
         }
     ]
-}
+  }
