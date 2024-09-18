@@ -5,8 +5,8 @@ import { UpdatePerfileDto } from './dto/update-perfile.dto';
 import { ApiBody, ApiTags } from '@nestjs/swagger';
 import { GetPerfileDto } from './dto/get-perfile.dto';
 import { JwtAuthGuard } from 'src/auth/jwt-auth/jwt-auth.guard';
-import { RolesGuard } from 'src/auth/roles/roles.guard';
 import { Roles } from 'src/auth/roles/roles.decorator';
+import { RolesGuard } from 'src/auth/roles/roles.guard';
 
 @ApiTags('Perfiles')
 @Controller('perfiles')
