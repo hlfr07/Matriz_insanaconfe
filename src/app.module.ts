@@ -28,7 +28,15 @@ import { EventosModule } from './eventos/eventos.module';
       database: process.env.POSTGRES_DATABASE,
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true,
-      ssl: process.env.POSTGRES_SSL === 'true' ? { rejectUnauthorized: false } : null,
+      ssl: process.env.POSTGRES_SSL === "true",
+      extra: {
+        ssl:
+          process.env.POSTGRES_SSL === "true"
+            ? {
+              rejectUnauthorized: false,
+            }
+            : null,
+      },
     }),
     PerfilesModule,
     UsuariosModule,
