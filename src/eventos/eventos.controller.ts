@@ -4,9 +4,9 @@ import { CreateEventoDto } from './dto/create-evento.dto';
 import { UpdateEventoDto } from './dto/update-evento.dto';
 import { ApiBody, ApiTags } from '@nestjs/swagger';
 import { GetEventoDto } from './dto/get-evento.dto';
-import { JwtAuthGuard } from 'src/auth/jwt-auth/jwt-auth.guard';
-import { RolesGuard } from 'src/auth/roles/roles.guard';
-import { Roles } from 'src/auth/roles/roles.decorator';
+import { JwtAuthGuard } from '../auth/jwt-auth/jwt-auth.guard';
+import { RolesGuard } from '../auth/roles/roles.guard';
+import { Roles } from '../auth/roles/roles.decorator';
 
 @ApiTags('eventos')
 @Controller('eventos')

@@ -4,9 +4,9 @@ import { CreateMatrixDto } from './dto/create-matrix.dto';
 import { UpdateMatrixDto } from './dto/update-matrix.dto';
 import { ApiBody, ApiTags } from '@nestjs/swagger';
 import { GetMatrixDto } from './dto/get-matrix.dto';
-import { JwtAuthGuard } from 'src/auth/jwt-auth/jwt-auth.guard';
-import { RolesGuard } from 'src/auth/roles/roles.guard';
-import { Roles } from 'src/auth/roles/roles.decorator';
+import { JwtAuthGuard } from '../auth/jwt-auth/jwt-auth.guard';
+import { RolesGuard } from '../auth/roles/roles.guard';
+import { Roles } from '../auth/roles/roles.decorator';
 @ApiTags('matrices')
 @Controller('matrices')
 export class MatricesController {
