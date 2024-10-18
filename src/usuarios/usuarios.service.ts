@@ -6,14 +6,13 @@ import { Usuario } from './entities/usuario.entity';
 import { Repository } from 'typeorm';
 import * as bcryptjs from 'bcryptjs';
 import { UpdatePasswordUsuarioDto } from './dto/updatepassword-usuario.dto';
-import { MailerService } from '@nestjs-modules/mailer';
-import { MailService } from 'src/mail/mail.service';
+import { MailService } from '../mail/mail.service';
 import { UpdatePasswordCodeUsuarioDto } from './dto/updatepasswordcode-usuarios.dto';
-import { DetallePerfilesService } from 'src/detalle_perfiles/detalle_perfiles.service';
-import { DetalleModuloPerfilService } from 'src/detalle_modulo_perfil/detalle_modulo_perfil.service';
-import { DetalleModulosTablasService } from 'src/detalle_modulos_tablas/detalle_modulos_tablas.service';
-import { ModulosService } from 'src/modulos/modulos.service';
-import { TablasService } from 'src/tablas/tablas.service';
+import { DetallePerfilesService } from '../detalle_perfiles/detalle_perfiles.service';
+import { DetalleModuloPerfilService } from '../detalle_modulo_perfil/detalle_modulo_perfil.service';
+import { DetalleModulosTablasService } from '../detalle_modulos_tablas/detalle_modulos_tablas.service';
+import { ModulosService } from '../modulos/modulos.service';
+import { TablasService } from '../tablas/tablas.service';
 
 @Injectable()
 export class UsuariosService {

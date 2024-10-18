@@ -1,14 +1,13 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { CreateAuthDto } from './dto/login-auth.dto';
-import { UsuariosService } from 'src/usuarios/usuarios.service';
+import { UsuariosService } from '../usuarios/usuarios.service';
 import { JwtService } from '@nestjs/jwt';
 import * as bcryptjs from 'bcryptjs'
-import { DetallePerfilesService } from 'src/detalle_perfiles/detalle_perfiles.service';
-import { DetalleModuloPerfil } from 'src/detalle_modulo_perfil/entities/detalle_modulo_perfil.entity';
-import { DetalleModuloPerfilService } from 'src/detalle_modulo_perfil/detalle_modulo_perfil.service';
-import { DetalleModulosTablasService } from 'src/detalle_modulos_tablas/detalle_modulos_tablas.service';
-import { ModulosService } from 'src/modulos/modulos.service';
-import { TablasService } from 'src/tablas/tablas.service';
+import { DetallePerfilesService } from '../detalle_perfiles/detalle_perfiles.service';
+import { DetalleModuloPerfilService } from '../detalle_modulo_perfil/detalle_modulo_perfil.service';
+import { DetalleModulosTablasService } from '../detalle_modulos_tablas/detalle_modulos_tablas.service';
+import { ModulosService } from '../modulos/modulos.service';
+import { TablasService } from '../tablas/tablas.service';
 
 @Injectable()
 export class AuthService {
@@ -66,7 +65,7 @@ export class AuthService {
 
     const tablas = await this.tablas.buscarTablas(detalleModulotablas);
 
-   // console.log(tablas);
+    // console.log(tablas);
 
     const payload = {
       sub: usuario.id,
