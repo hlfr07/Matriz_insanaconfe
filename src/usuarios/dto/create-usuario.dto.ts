@@ -50,12 +50,4 @@ export class CreateUsuarioDto {
     @MaxLength(50, { message: 'La contraseña debe tener menos de 50 caracteres' })
     @MinLength(3, { message: 'La contraseña debe tener más de 3 caracteres' })
     password: string;
-
-    @ApiProperty()
-    @Transform(({ value }) => typeof value === 'string' ? value.trim() : value)
-    @IsNotEmpty({ message: 'El perfil no puede estar vacío' })
-    @IsString({ message: 'El perfil debe ser un texto' })
-    @MaxLength(100, { message: 'El perfil debe tener menos de 100 caracteressssssssssssssss' })
-    @MinLength(1, { message: 'El perfil debe tener más de 1 caracteresssssssssssssssss' })
-    id_perfil: string;
 }

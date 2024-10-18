@@ -4,13 +4,18 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { PerfilesModule } from './perfiles/perfiles.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { SesionesModule } from './sesiones/sesiones.module';
 import { UsuariosModule } from './usuarios/usuarios.module';
+import { TablasModule } from './tablas/tablas.module';
+import { PermisosModule } from './permisos/permisos.module';
+import { ModulosModule } from './modulos/modulos.module';
+import { DetallePerfilesModule } from './detalle_perfiles/detalle_perfiles.module';
+import { DetalleModulosTablasModule } from './detalle_modulos_tablas/detalle_modulos_tablas.module';
+import { DetalleModuloPerfilModule } from './detalle_modulo_perfil/detalle_modulo_perfil.module';
 import { MailService } from './mail/mail.service';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { MailModule } from './mail/mail.module';
 import { AuthModule } from './auth/auth.module';
-import { MatricesModule } from './matrices/matrices.module';
-import { EventosModule } from './eventos/eventos.module';
 
 @Module({
   imports: [
@@ -28,24 +33,21 @@ import { EventosModule } from './eventos/eventos.module';
       database: process.env.POSTGRES_DATABASE,
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true,
-      ssl: process.env.POSTGRES_SSL === "true",
-      extra: {
-        ssl:
-          process.env.POSTGRES_SSL === "true"
-            ? {
-              rejectUnauthorized: false,
-            }
-            : null,
-      },
+      ssl: process.env.POSTGRES_SSL === 'true' ? { rejectUnauthorized: false } : null,
     }),
     PerfilesModule,
+    SesionesModule,
     UsuariosModule,
+    TablasModule,
+    PermisosModule,
+    ModulosModule,
+    DetallePerfilesModule,
+    DetalleModulosTablasModule,
+    DetalleModuloPerfilModule,
     MailModule,
     AuthModule,
-    MatricesModule,
-    EventosModule,
   ],
   controllers: [AppController],
   providers: [AppService, MailService],
 })
-export class AppModule {}
+export class AppModule { }

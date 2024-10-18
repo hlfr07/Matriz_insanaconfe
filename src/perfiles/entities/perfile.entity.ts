@@ -8,6 +8,9 @@ export class Perfile {
     @Column({unique: true, nullable: false})
     perfil: string;
 
+    @Column({nullable: false})
+    prioridad: number;
+
     @Column({default: true})
     estado: boolean;
 }
