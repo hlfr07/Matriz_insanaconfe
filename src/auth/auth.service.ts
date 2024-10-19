@@ -77,8 +77,8 @@ export class AuthService {
         email: usuario.email
       },
       perfiles: perfiles,
-      modulos: modulos,
-      tablas: tablas
+      // modulos: modulos,
+      // tablas: tablas
     };
 
     //console.log(payload.tablas);

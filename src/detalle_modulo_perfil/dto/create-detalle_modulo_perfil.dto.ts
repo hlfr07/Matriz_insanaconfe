@@ -9,7 +9,7 @@ export class CreateDetalleModuloPerfilDto {
     @IsString({ message: 'El id_modulo debe ser un texto' })
     @MaxLength(100, { message: 'El id_modulo debe tener menos de 100 caracteres' })
     @MinLength(1, { message: 'El id_modulo debe tener más de 1 caracteres' })
-    id_modulo: string;
+    id_detalle_modulo: string;
 
     @ApiProperty()
     @Transform(({ value }) => typeof value === 'string' ? value.trim() : value)
@@ -17,5 +17,5 @@ export class CreateDetalleModuloPerfilDto {
     @IsString({ message: 'El id_perfil debe ser un texto' })
     @MaxLength(100, { message: 'El id_perfil debe tener menos de 100 caracteres' })
     @MinLength(1, { message: 'El id_perfil debe tener más de 1 caracteres' })
-    id_perfil: string;
+    id_detalle_perfil: string;
 }

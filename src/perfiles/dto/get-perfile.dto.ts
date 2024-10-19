@@ -6,7 +6,5 @@ export class GetPerfileDto {
     @ApiProperty()
     perfil: string;
     @ApiProperty()
-    prioridad: number;
-    @ApiProperty()
     estado: boolean;
 }

@@ -4,9 +4,9 @@ export class GetDetalleModuloPerfilDto {
     @ApiProperty()
     id: number;
     @ApiProperty()
-    id_modulo: any;
+    id_detalle_modulo: any;
     @ApiProperty()
-    id_perfil: any;
+    id_detalle_perfil: any;
     @ApiProperty()
     estado: boolean;
 }

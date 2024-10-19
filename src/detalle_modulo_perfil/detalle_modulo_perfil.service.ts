@@ -17,7 +17,7 @@ export class DetalleModuloPerfilService {
 
   async create(createDetalleModuloPerfilDto: CreateDetalleModuloPerfilDto) {
     const moduloEncontrado = await this.detallemodulostablaRepository.findOneBy({
-      id: parseInt(createDetalleModuloPerfilDto.id_modulo)
+      id: parseInt(createDetalleModuloPerfilDto.id_detalle_modulo)
     });
 
     if (!moduloEncontrado) {
@@ -25,7 +25,7 @@ export class DetalleModuloPerfilService {
     }
 
     const perfilEncontrado = await this.detalleperfileRepository.findOneBy({
-      id: parseInt(createDetalleModuloPerfilDto.id_perfil)
+      id: parseInt(createDetalleModuloPerfilDto.id_detalle_perfil)
     });
 
     if (!perfilEncontrado) {
@@ -78,7 +78,7 @@ export class DetalleModuloPerfilService {
     }
 
     const moduloEncontrado = await this.detallemodulostablaRepository.findOneBy({
-      id: parseInt(updateDetalleModuloPerfilDto.id_modulo)
+      id: parseInt(updateDetalleModuloPerfilDto.id_detalle_modulo)
     });
 
     if (!moduloEncontrado) {
@@ -86,7 +86,7 @@ export class DetalleModuloPerfilService {
     }
 
     const perfilEncontrado = await this.detalleperfileRepository.findOneBy({
-      id: parseInt(updateDetalleModuloPerfilDto.id_perfil)
+      id: parseInt(updateDetalleModuloPerfilDto.id_detalle_perfil)
     });
 
     if (!perfilEncontrado) {

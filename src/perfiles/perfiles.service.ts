@@ -21,7 +21,6 @@ export class PerfilesService {
 
     const nuevoPerfil = this.perfileRepository.create({
       perfil: createPerfileDto.perfil,
-      prioridad: parseInt(createPerfileDto.prioridad)
     });
 
     await this.perfileRepository.save(nuevoPerfil);
@@ -75,7 +74,6 @@ export class PerfilesService {
     }
 
     perfilEncontrado.perfil = updatePerfileDto.perfil;
-    perfilEncontrado.prioridad = parseInt(updatePerfileDto.prioridad);
 
     await this.perfileRepository.update(id, perfilEncontrado);
 
