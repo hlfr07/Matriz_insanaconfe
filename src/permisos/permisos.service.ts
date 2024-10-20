@@ -9,7 +9,7 @@ import { Repository } from 'typeorm';
 export class PermisosService {
   constructor(
     @InjectRepository(Permiso) private permisoRepository: Repository<Permiso>,
-  ) {}
+  ) { }
   async create(createPermisoDto: CreatePermisoDto) {
     //debemos verificar que los valores sean get, post, put y delete tengan valores true o false
     if (createPermisoDto.get !== 'true' && createPermisoDto.get !== 'false') {
@@ -47,7 +47,7 @@ export class PermisosService {
       delete: createPermisoDto.delete === 'true' ? true : false,
     });
     await this.permisoRepository.save(nuevoPermiso);
-    return { message: 'Permiso creado correctamente' };
+    return nuevoPermiso;
   }
 
   findAll() {

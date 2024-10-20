@@ -25,7 +25,7 @@ export class ModulosService {
 
     await this.moduloRepository.save(nuevoModulo);
 
-    return { message: 'Módulo creado correctamente' };
+    return nuevoModulo;
   }
 
   findAll() {
@@ -74,7 +74,7 @@ export class ModulosService {
     }
 
     moduloEncontrado.modulo = updateModuloDto.modulo;
-    await this.moduloRepository.update(id, updateModuloDto);
+    await this.moduloRepository.update(id, moduloEncontrado);
 
     return { message: 'Módulo actualizado correctamente' };
   }

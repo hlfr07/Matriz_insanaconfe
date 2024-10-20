@@ -25,7 +25,7 @@ export class PerfilesService {
 
     await this.perfileRepository.save(nuevoPerfil);
 
-    return { message: 'Perfil creado correctamente' };
+    return nuevoPerfil;
   }
 
   findAll() {

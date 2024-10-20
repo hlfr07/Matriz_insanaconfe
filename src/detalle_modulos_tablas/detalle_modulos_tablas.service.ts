@@ -48,7 +48,7 @@ export class DetalleModulosTablasService {
 
     await this.detalleModulosTablaRepository.save(nuevoDetalleModulosTabla);
 
-    return { message: 'Detalle Modulos Tabla creado correctamente' };
+    return nuevoDetalleModulosTabla;
   }
 
   findAll() {

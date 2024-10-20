@@ -25,7 +25,7 @@ export class TablasService {
 
     await this.tablaRepository.save(nuevaTabla);
 
-    return { message: 'Tabla creada correctamente' };
+    return nuevaTabla;
   }
 
   findAll() {

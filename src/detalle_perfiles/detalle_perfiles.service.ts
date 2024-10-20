@@ -37,7 +37,7 @@ export class DetallePerfilesService {
 
     await this.detalleperfileRepository.save(nuevoDetallePerfile);
 
-    return { message: 'Detalle Perfile creado correctamente' };
+    return nuevoDetallePerfile;
   }
 
   findAll() {

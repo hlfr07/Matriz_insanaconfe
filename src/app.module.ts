@@ -16,6 +16,10 @@ import { MailService } from './mail/mail.service';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { MailModule } from './mail/mail.module';
 import { AuthModule } from './auth/auth.module';
+import { RiesgosModule } from './riesgos/riesgos.module';
+import { MatricesModule } from './matrices/matrices.module';
+import { EventosModule } from './eventos/eventos.module';
+import { MatrizValoresModule } from './matriz_valores/matriz_valores.module';
 
 @Module({
   imports: [
@@ -46,6 +50,10 @@ import { AuthModule } from './auth/auth.module';
     DetalleModuloPerfilModule,
     MailModule,
     AuthModule,
+    RiesgosModule,
+    MatricesModule,
+    EventosModule,
+    MatrizValoresModule,
   ],
   controllers: [AppController],
   providers: [AppService, MailService],

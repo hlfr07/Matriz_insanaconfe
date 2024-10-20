@@ -39,7 +39,7 @@ export class DetalleModuloPerfilService {
 
     await this.detallemoduloperfilRepository.save(nuevoDetalleModuloPerfil);
 
-    return { message: 'Detalle Modulo Perfil creado correctamente' };
+    return nuevoDetalleModuloPerfil;
   }
 
   findAll() {
@@ -141,7 +141,7 @@ export class DetalleModuloPerfilService {
       });
     });
 
-   //antes de retornar verificamos que no se vayan 2 detalleModulo con el mismo id, usemos foreach para recorrer el array y verificar que no se repitan los id
+    //antes de retornar verificamos que no se vayan 2 detalleModulo con el mismo id, usemos foreach para recorrer el array y verificar que no se repitan los id
 
     let detalleModuloFiltrado = [];
 

@@ -28,7 +28,7 @@ export class SesionesService {
 
     await this.sesioneRepository.save(nuevaSesione);
 
-    return { message: 'Sesione creada correctamente' };
+    return nuevaSesione;
   }
 
   findAll() {
