@@ -23,6 +23,10 @@ export class MatricesService {
       id: parseInt(createMatrixDto.id_usuario)
     });
 
+    if (!usuarioEncontrado) {
+      throw new HttpException('Usuario no encontrado', HttpStatus.NOT_FOUND);
+    }
+
     const nuevaMatrix = this.matrixRepository.create({
       empresa: createMatrixDto.empresa,
       nombre: createMatrixDto.nombre,
@@ -88,6 +92,10 @@ export class MatricesService {
     const usuarioEncontrado = await this.usuarioRepository.findOneBy({
       id: parseInt(updateMatrixDto.id_usuario)
     });
+
+    if (!usuarioEncontrado) {
+      throw new HttpException('Usuario no encontrado', HttpStatus.NOT_FOUND);
+    }
 
     await this.matrixRepository.update(id, {
       empresa: updateMatrixDto.empresa,
