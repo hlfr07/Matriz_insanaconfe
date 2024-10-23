@@ -24,7 +24,7 @@ export class CreateMatrixDto {
     @IsNotEmpty({ message: 'Las filas no pueden estar vacías' })
     @IsString({ message: 'Las filas deben ser un texto' })
     @MaxLength(50, { message: 'Las filas deben tener menos de 50 caracteres' })
-    @MinLength(3, { message: 'Las filas deben tener más de 3 caracteres' })
+    @MinLength(1, { message: 'Las filas deben tener más de 3 caracteres' })
     filas: string;
 
     @ApiProperty()
@@ -32,7 +32,7 @@ export class CreateMatrixDto {
     @IsNotEmpty({ message: 'Las columnas no pueden estar vacías' })
     @IsString({ message: 'Las columnas deben ser un texto' })
     @MaxLength(50, { message: 'Las columnas deben tener menos de 50 caracteres' })
-    @MinLength(3, { message: 'Las columnas deben tener más de 3 caracteres' })
+    @MinLength(1, { message: 'Las columnas deben tener más de 3 caracteres' })
     columnas: string;
 
     @ApiProperty()
