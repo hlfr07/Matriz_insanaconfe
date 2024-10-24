@@ -7,16 +7,16 @@ export class MatrizValore {
     id: number;
 
     @Column({ type: 'json', nullable: false })
-    probabilidad: Record<string, any>;
+    probabilidad: Record<string, any>[];
 
     @Column({ type: 'json', nullable: false })
-    valorprobabilidad: Record<string, any>;
+    valorprobabilidad: Record<string, any>[];
 
     @Column({ type: 'json', nullable: false })
-    impacto: Record<string, any>;
+    impacto: Record<string, any>[];
 
     @Column({ type: 'json', nullable: false })
-    valorimpacto: Record<string, any>;
+    valorimpacto: Record<string, any>[];
 
     @ManyToOne(() => Matrix, matrix => matrix.id, { eager: true })
     @JoinColumn({ name: 'matriz_id' })
