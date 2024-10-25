@@ -21,8 +21,8 @@ export class PerfilesController {
 
   @ApiBody({ type: [GetPerfileDto] })
   @Get()
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('perfiles', 'get') // Usuarios con rol 'admin' o 'user' pueden ver todos 
+  // @UseGuards(JwtAuthGuard, RolesGuard)
+  // @Roles('perfiles', 'get') // Usuarios con rol 'admin' o 'user' pueden ver todos 
   findAll() {
     return this.perfilesService.findAll();
   }
