@@ -22,26 +22,26 @@ export class RolesGuard implements CanActivate {
     const { user } = context.switchToHttp().getRequest();
 
     //llamamos al serivicio de permisosidusuario
-    const permisosdelservicio = await this.PermisosService.buscarpermisosporidusuario(user?.sub);
+    //const permisosdelservicio = await this.PermisosService.buscarpermisosporidusuario(user?.sub);
     //console.log("PERMISOSOS DE MI SERVICIO USUARIOS",permisosdelservicio.tablas);
-    const tablas = permisosdelservicio?.tablas;
+    //const tablas = permisosdelservicio?.tablas;
     //console.log(tablas);
 
-    if (!tablas) {
-      throw new ForbiddenException('No tienes permiso para acceder a esta ruta');
-    }
+    // if (!tablas) {
+    //   throw new ForbiddenException('No tienes permiso para acceder a esta ruta');
+    // }
 
     //ahora recorremos con un foreach a tablas y extraemos la tabla y permiso
     let permisos = [];
-    tablas.forEach((elementtabla) => {
-      //  console.log(elementtabla.tabla);
-      //   console.log(elementtabla.permiso);
-      const permiso = {
-        tabla: elementtabla.tabla,
-        permiso: elementtabla.permiso
-      }
-      permisos.push(permiso);
-    });
+    // tablas.forEach((elementtabla) => {
+    //   //  console.log(elementtabla.tabla);
+    //   //   console.log(elementtabla.permiso);
+    //   const permiso = {
+    //     tabla: elementtabla.tabla,
+    //     permiso: elementtabla.permiso
+    //   }
+    //   permisos.push(permiso);
+    // });
     //console.log(permisos);
 
     // Desestructurar tabla y permiso requeridos desde el decorador @Roles

@@ -7,11 +7,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { SesionesModule } from './sesiones/sesiones.module';
 import { UsuariosModule } from './usuarios/usuarios.module';
 import { TablasModule } from './tablas/tablas.module';
-import { PermisosModule } from './permisos/permisos.module';
 import { ModulosModule } from './modulos/modulos.module';
-import { DetallePerfilesModule } from './detalle_perfiles/detalle_perfiles.module';
-import { DetalleModulosTablasModule } from './detalle_modulos_tablas/detalle_modulos_tablas.module';
-import { DetalleModuloPerfilModule } from './detalle_modulo_perfil/detalle_modulo_perfil.module';
 import { MailService } from './mail/mail.service';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { MailModule } from './mail/mail.module';
@@ -20,6 +16,7 @@ import { RiesgosModule } from './riesgos/riesgos.module';
 import { MatricesModule } from './matrices/matrices.module';
 import { EventosModule } from './eventos/eventos.module';
 import { MatrizValoresModule } from './matriz_valores/matriz_valores.module';
+import { DetallePermisosModule } from './detalle_permisos/detalle_permisos.module';
 
 @Module({
   imports: [
@@ -43,17 +40,14 @@ import { MatrizValoresModule } from './matriz_valores/matriz_valores.module';
     SesionesModule,
     UsuariosModule,
     TablasModule,
-    PermisosModule,
     ModulosModule,
-    DetallePerfilesModule,
-    DetalleModulosTablasModule,
-    DetalleModuloPerfilModule,
     MailModule,
     AuthModule,
     RiesgosModule,
     MatricesModule,
     EventosModule,
     MatrizValoresModule,
+    DetallePermisosModule,
   ],
   controllers: [AppController],
   providers: [AppService, MailService],

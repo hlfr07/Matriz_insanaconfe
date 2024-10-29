@@ -6,13 +6,11 @@ import { Usuario } from './entities/usuario.entity';
 import { MailModule } from '../mail/mail.module';
 import { TablasModule } from '../tablas/tablas.module';
 import { ModulosModule } from '../modulos/modulos.module';
-import { DetalleModulosTablasModule } from '../detalle_modulos_tablas/detalle_modulos_tablas.module';
-import { DetalleModuloPerfilModule } from '../detalle_modulo_perfil/detalle_modulo_perfil.module';
-import { DetallePerfilesModule } from '../detalle_perfiles/detalle_perfiles.module';
+import { Perfile } from 'src/perfiles/entities/perfile.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Usuario]), MailModule,
-    TablasModule, ModulosModule, DetalleModulosTablasModule, DetalleModuloPerfilModule, DetallePerfilesModule,
+  imports: [TypeOrmModule.forFeature([Usuario, Perfile]), MailModule,
+    TablasModule, ModulosModule
   ],
   controllers: [UsuariosController],
   providers: [UsuariosService],

@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
+import { Perfile } from "src/perfiles/entities/perfile.entity";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({ name: "usuarios" })
 export class Usuario {
@@ -16,6 +17,10 @@ export class Usuario {
     usuario: string;
     @Column({ nullable: false })
     password: string;
+    //aca ponemos el fk id_perfil
+    @ManyToOne(() => Perfile, perfil => perfil.id, { eager: true })
+    @JoinColumn({ name: 'id_perfil' })
+    perfil: Perfile;
     @Column({ default: true })
     estado: boolean;
     @Column({ nullable: true })

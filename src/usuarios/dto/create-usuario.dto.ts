@@ -10,7 +10,7 @@ export class CreateUsuarioDto {
     @MaxLength(8, { message: 'El dni debe tener menos de 8 caracteres' })
     @MinLength(8, { message: 'El dni debe tener más de 8 caracteres' })
     dni: string;
-    
+
     @ApiProperty()
     @Transform(({ value }) => typeof value === 'string' ? value.trim() : value)
     @IsNotEmpty({ message: 'El nombre de usuario no puede estar vacío' })
@@ -50,4 +50,12 @@ export class CreateUsuarioDto {
     @MaxLength(50, { message: 'La contraseña debe tener menos de 50 caracteres' })
     @MinLength(3, { message: 'La contraseña debe tener más de 3 caracteres' })
     password: string;
+
+    @ApiProperty()
+    @Transform(({ value }) => typeof value === 'string' ? value.trim() : value)
+    @IsNotEmpty({ message: 'El perfil de usuario no puede estar vacío' })
+    @IsString({ message: 'El perfil de usuario debe ser un texto' })
+    @MaxLength(100, { message: 'El perfil de usuario debe tener menos de 100 caracteres' })
+    @MinLength(1, { message: 'El perfil de usuario debe tener más de 1 caracteres' })
+    id_perfil: string;
 }

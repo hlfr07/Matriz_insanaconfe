@@ -12,7 +12,7 @@ export class UpdateUsuarioDto {
     @MaxLength(50, { message: 'El dni de usuario debe tener menos de 50 caracteres' })
     @MinLength(3, { message: 'El dni de usuario debe tener más de 3 caracteres' })
     dni: string;
-    
+
     @ApiProperty()
     @Transform(({ value }) => typeof value === 'string' ? value.trim() : value)
     @IsNotEmpty({ message: 'El nombre de usuario no puede estar vacío' })
@@ -44,4 +44,13 @@ export class UpdateUsuarioDto {
     @MaxLength(50, { message: 'El usuario debe tener menos de 50 caracteres' })
     @MinLength(3, { message: 'El usuario debe tener más de 3 caracteres' })
     usuario: string;
+
+    //ahora para el id_perfil
+    @ApiProperty()
+    @Transform(({ value }) => typeof value === 'string' ? value.trim() : value)
+    @IsNotEmpty({ message: 'El perfil de usuario no puede estar vacío' })
+    @IsString({ message: 'El perfil de usuario debe ser un texto' })
+    @MaxLength(100, { message: 'El perfil de usuario debe tener menos de 100 caracteres' })
+    @MinLength(1, { message: 'El perfil de usuario debe tener más de 1 caracteres' })
+    id_perfil: string;
 }

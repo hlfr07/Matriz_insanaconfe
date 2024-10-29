@@ -55,6 +55,6 @@ export class UsuariosController {
 
   @Get('/permisosporidusuario/:id')
   buscarpermisosporidusuario(@Param('id') id: string) {
-    return this.usuariosService.buscarpermisosporidusuario(+id);
+    //return this.usuariosService.buscarpermisosporidusuario(+id);
   }
 }

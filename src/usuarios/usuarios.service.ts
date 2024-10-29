@@ -8,16 +8,13 @@ import * as bcryptjs from 'bcryptjs';
 import { UpdatePasswordUsuarioDto } from './dto/updatepassword-usuario.dto';
 import { MailService } from '../mail/mail.service';
 import { UpdatePasswordCodeUsuarioDto } from './dto/updatepasswordcode-usuarios.dto';
-import { DetallePerfilesService } from '../detalle_perfiles/detalle_perfiles.service';
-import { DetalleModuloPerfilService } from '../detalle_modulo_perfil/detalle_modulo_perfil.service';
-import { DetalleModulosTablasService } from '../detalle_modulos_tablas/detalle_modulos_tablas.service';
 import { ModulosService } from '../modulos/modulos.service';
 import { TablasService } from '../tablas/tablas.service';
+import { Perfile } from 'src/perfiles/entities/perfile.entity';
 
 @Injectable()
 export class UsuariosService {
-  constructor(@InjectRepository(Usuario) private usuarioRepository: Repository<Usuario>, private readonly mailService: MailService,
-    private readonly detallePerfiles: DetallePerfilesService, private readonly detalleModulosPerfiles: DetalleModuloPerfilService, private detalleModulosTablas: DetalleModulosTablasService, private readonly modulos: ModulosService, private readonly tablas: TablasService
+  constructor(@InjectRepository(Usuario) private usuarioRepository: Repository<Usuario>, private readonly mailService: MailService, private readonly modulos: ModulosService, private readonly tablas: TablasService, @InjectRepository(Perfile) private perfileRepository: Repository<Perfile>
   ) { }
   async create(createUsuarioDto: CreateUsuarioDto) {
     const dniEncontrado = await this.usuarioRepository.findOneBy({
@@ -32,16 +29,25 @@ export class UsuariosService {
       email: createUsuarioDto.email
     });
 
+    //buscamos si el id_perfil existe
+    const perfilEncontrado = await this.perfileRepository.findOneBy({
+      id: parseInt(createUsuarioDto.id_perfil)
+    });
+
+    if (!perfilEncontrado) {
+      throw new HttpException('Perfil no encontrado', HttpStatus.NOT_FOUND);
+    }
+
     if (dniEncontrado) {
-      return { message: 'El dni ya existe' };
+      throw new HttpException('El dni ya existe', HttpStatus.BAD_REQUEST);
     }
 
     if (emailEncontrado) {
-      return { message: 'El email ya existe' };
+      throw new HttpException('El email ya existe', HttpStatus.BAD_REQUEST);
     }
 
     if (usuarioEncontrado) {
-      return { message: 'El usuario ya existe' };
+      throw new HttpException('El usuario ya existe', HttpStatus.BAD_REQUEST);
     }
 
     //ahora pasamos a crear el usuario pero con el password encriptado
@@ -51,7 +57,8 @@ export class UsuariosService {
       apellido: createUsuarioDto.apellido,
       email: createUsuarioDto.email,
       usuario: createUsuarioDto.usuario,
-      password: await bcryptjs.hash(createUsuarioDto.password, 10)
+      password: await bcryptjs.hash(createUsuarioDto.password, 10),
+      perfil: perfilEncontrado
     });
 
     await this.usuarioRepository.save(nuevoUsuario);
@@ -73,11 +80,11 @@ export class UsuariosService {
     });
 
     if (!usuario) {
-      return { message: 'Usuario no encontrado' };
+      throw new HttpException('Usuario no encontrado', HttpStatus.NOT_FOUND);
     }
 
     if (!usuario.estado) {
-      return { message: 'Usuario no encontrado' };
+      throw new HttpException('Usuario eliminado', HttpStatus.BAD_REQUEST);
     }
 
     return usuario;
@@ -92,6 +99,15 @@ export class UsuariosService {
       throw new HttpException('Usuario no encontrado', HttpStatus.NOT_FOUND);
     }
 
+    //verificamos que el id_perfil exista
+    const perfilEncontrado = await this.perfileRepository.findOneBy({
+      id: parseInt(updateUsuarioDto.id_perfil)
+    });
+
+    if (!perfilEncontrado) {
+      throw new HttpException('Perfil no encontrado', HttpStatus.NOT_FOUND);
+    }
+
     //comprobar la existencia del dni, usuario, email con el mismo nombre solo si el nombre es diferente
     if (updateUsuarioDto.dni !== usuarioEncontrado.dni) {
       const dniEncontrado = await this.usuarioRepository.findOneBy({
@@ -99,7 +115,7 @@ export class UsuariosService {
       });
 
       if (dniEncontrado) {
-        return { message: 'El dni ya existe' };
+        throw new HttpException('El dni ya existe', HttpStatus.BAD_REQUEST);
       }
     }
 
@@ -109,7 +125,7 @@ export class UsuariosService {
       });
 
       if (emailEncontrado) {
-        return { message: 'El email ya existe' };
+        throw new HttpException('El email ya existe', HttpStatus.BAD_REQUEST);
       }
     }
 
@@ -119,7 +135,7 @@ export class UsuariosService {
       });
 
       if (usuarioEncontrado) {
-        return { message: 'El usuario ya existe' };
+        throw new HttpException('El usuario ya existe', HttpStatus.BAD_REQUEST);
       }
     }
 
@@ -129,7 +145,8 @@ export class UsuariosService {
       apellido: updateUsuarioDto.apellido,
       email: updateUsuarioDto.email,
       usuario: updateUsuarioDto.usuario,
-      password: usuarioEncontrado.password
+      password: usuarioEncontrado.password,
+      perfil: perfilEncontrado
     });
 
     return { message: 'Usuario actualizado correctamente' };
@@ -287,53 +304,53 @@ export class UsuariosService {
     });
   }
 
-  async buscarpermisosporidusuario(id: number) {
-    console.log("ID DE MI USUARIO", id);
-    //buscamos los perfiles que le corresponde a cada usuario
-    const detallePerfiles = await this.detallePerfiles.buscarperfilesporidusuario(id);
+  // async buscarpermisosporidusuario(id: number) {
+  //   console.log("ID DE MI USUARIO", id);
+  //   //buscamos los perfiles que le corresponde a cada usuario
+  //   const detallePerfiles = await this.detallePerfiles.buscarperfilesporidusuario(id);
 
-    //ahora haremos un foreach para recorrer el detallePerfiles y extraer el perfil
-    const perfilesEncontrados = [];
+  //   //ahora haremos un foreach para recorrer el detallePerfiles y extraer el perfil
+  //   const perfilesEncontrados = [];
 
-    detallePerfiles.forEach(detallePerfiles => {
-      perfilesEncontrados.push(detallePerfiles.perfil);
-    });
-
-
-    //ahora verificamos que el perfiles no haya repetidos
-
-    const perfiles = perfilesEncontrados.filter((valor, indiceActual, arreglo) => arreglo.findIndex((perfil) => perfil.id === valor.id) === indiceActual);
-
-    //console.log(perfiles);
+  //   detallePerfiles.forEach(detallePerfiles => {
+  //     perfilesEncontrados.push(detallePerfiles.perfil);
+  //   });
 
 
-    //console.log(detallePerfiles);
+  //   //ahora verificamos que el perfiles no haya repetidos
+
+  //   const perfiles = perfilesEncontrados.filter((valor, indiceActual, arreglo) => arreglo.findIndex((perfil) => perfil.id === valor.id) === indiceActual);
+
+  //   //console.log(perfiles);
 
 
-    const detalleModulo = await this.detalleModulosPerfiles.buscarModulosPorPerfil(detallePerfiles);
-    //verificamos si el detalleModulo tiene datos
-
-    //console.log(detalleModulo);
+  //   //console.log(detallePerfiles);
 
 
-    const detalleModulotablas = await this.detalleModulosTablas.buscartablaspormodulo(detalleModulo);
+  //   const detalleModulo = await this.detalleModulosPerfiles.buscarModulosPorPerfil(detallePerfiles);
+  //   //verificamos si el detalleModulo tiene datos
 
-    //console.log(detalleModulotablas);
+  //   //console.log(detalleModulo);
 
-    const modulos = await this.modulos.buscarModulos(detalleModulotablas);
 
-    //console.log(modulos);
+  //   const detalleModulotablas = await this.detalleModulosTablas.buscartablaspormodulo(detalleModulo);
 
-    const tablas = await this.tablas.buscarTablas(detalleModulotablas);
+  //   //console.log(detalleModulotablas);
 
-    // console.log(tablas);
+  //   const modulos = await this.modulos.buscarModulos(detalleModulotablas);
 
-    const payload = {
-      perfiles: perfiles,
-      modulos: modulos,
-      tablas: tablas
-    };
+  //   //console.log(modulos);
 
-    return payload;
-  }
+  //   const tablas = await this.tablas.buscarTablas(detalleModulotablas);
+
+  //   // console.log(tablas);
+
+  //   const payload = {
+  //     perfiles: perfiles,
+  //     modulos: modulos,
+  //     tablas: tablas
+  //   };
+
+  //   return payload;
+  // }
 }

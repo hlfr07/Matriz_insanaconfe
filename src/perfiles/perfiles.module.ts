@@ -6,7 +6,7 @@ import { Perfile } from './entities/perfile.entity';
 import { UsuariosModule } from '../usuarios/usuarios.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Perfile]), UsuariosModule],
+  imports: [TypeOrmModule.forFeature([Perfile])],
   controllers: [PerfilesController],
   providers: [PerfilesService],
   exports: [PerfilesService]
