@@ -5,12 +5,15 @@ import { JwtService } from '@nestjs/jwt';
 import * as bcryptjs from 'bcryptjs'
 import { ModulosService } from '../modulos/modulos.service';
 import { TablasService } from '../tablas/tablas.service';
+import { DetallePermisosService } from 'src/detalle_permisos/detalle_permisos.service';
+import { SesionesService } from 'src/sesiones/sesiones.service';
+import e from 'express';
 
 @Injectable()
 export class AuthService {
   //creamos el constructor para usar el servicio de usuario
   constructor(private readonly usuarioService: UsuariosService,
-    private readonly jwtService: JwtService, private readonly modulos: ModulosService, private readonly tablas: TablasService) { }
+    private readonly jwtService: JwtService, private readonly modulos: ModulosService, private readonly tablas: TablasService, private readonly detallePermisos: DetallePermisosService, private readonly sesiones: SesionesService) { }
   async create(createAuthDto: CreateAuthDto) {
     //buscamos el usuario por el nombre
     const usuario = await this.usuarioService.buscarParaLogin(createAuthDto.usuario);
@@ -25,44 +28,29 @@ export class AuthService {
       throw new UnauthorizedException('Contraseña incorrecta');
     }
 
-    // //buscamos los perfiles que le corresponde a cada usuario
-    // const detallePerfiles = await this.detallePerfiles.buscarperfilesporidusuario(usuario.id);
+    //buscamos si el usuario tiene una sesion activa
+    const sesionActiva = await this.sesiones.buscarSesionesPorUsuario(usuario.id);
 
-    // //ahora haremos un foreach para recorrer el detallePerfiles y extraer el perfil
-    // const perfilesEncontrados = [];
+    //verificamos si hay datos en la sesion
+    if (sesionActiva) {
+      //si hay datos en la sesion, actualizamos la sesion
+      throw new UnauthorizedException('Ya hay una sesion activa');
+    } else {
+      //si no hay datos en la sesion, creamos una nueva sesion
+      await this.sesiones.activarSesionesPorUsuario(usuario.id);
+    }
 
-    // detallePerfiles.forEach(detallePerfiles => {
-    //   perfilesEncontrados.push(detallePerfiles.perfil);
-    // });
+    // console.log("SESION ACTIVA", sesionActiva);
 
+    //buscamos los perfiles que le corresponde a cada usuario
 
-    // //ahora verificamos que el perfiles no haya repetidos
+    // console.log("USUARIO", usuario.perfil);
+    const perfilUsuario = usuario.perfil;
 
-    // const perfiles = perfilesEncontrados.filter((valor, indiceActual, arreglo) => arreglo.findIndex((perfil) => perfil.id === valor.id) === indiceActual);
+    //recorremos con un foreach al detallePerfiles para extraer el permisos usando el servicio de permisos
+    const permisos = await this.detallePermisos.buscarPermisosperfil(perfilUsuario);
 
-    // //console.log(perfiles);
-
-
-    // //console.log(detallePerfiles);
-
-
-    // const detalleModulo = await this.detalleModulosPerfiles.buscarModulosPorPerfil(detallePerfiles);
-    // //verificamos si el detalleModulo tiene datos
-
-    // //console.log(detalleModulo);
-
-
-    // const detalleModulotablas = await this.detalleModulosTablas.buscartablaspormodulo(detalleModulo);
-
-    // //console.log(detalleModulotablas);
-
-    // const modulos = await this.modulos.buscarModulos(detalleModulotablas);
-
-    // //console.log(modulos);
-
-    // const tablas = await this.tablas.buscarTablas(detalleModulotablas);
-
-    // console.log(tablas);
+    //console.log(permisos);
 
     const payload = {
       sub: usuario.id,
@@ -73,12 +61,12 @@ export class AuthService {
         apellido: usuario.apellido,
         email: usuario.email
       },
-      //perfiles: perfiles,
-      // modulos: modulos,
-      // tablas: tablas
+      perfiles: permisos.perfiles,
+      modulos: permisos.modulos,
+      tablas: permisos.tablas
     };
-
-    //console.log(payload.tablas);
+    // console.log("PERMISOS DE MI USUARIO", payload);
+    // console.log(payload.tablas);
 
     const accessToken = await this.jwtService.signAsync(payload, {
       secret: process.env.ACCESS_TOKEN,

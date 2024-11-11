@@ -10,32 +10,32 @@ import { GetSesioneDto } from './dto/get.sesione.dto';
 export class SesionesController {
   constructor(private readonly sesionesService: SesionesService) {}
 
-  @ApiBody({ type: CreateSesioneDto })
-  @Post()
-  create(@Body() createSesioneDto: CreateSesioneDto) {
-    return this.sesionesService.create(createSesioneDto);
-  }
+  // @ApiBody({ type: CreateSesioneDto })
+  // @Post()
+  // create(@Body() createSesioneDto: CreateSesioneDto) {
+  //   return this.sesionesService.create(createSesioneDto);
+  // }
 
-  @ApiBody({ type: [GetSesioneDto] })
-  @Get()
-  findAll() {
-    return this.sesionesService.findAll();
-  }
+  // @ApiBody({ type: [GetSesioneDto] })
+  // @Get()
+  // findAll() {
+  //   return this.sesionesService.findAll();
+  // }
 
-  @ApiBody({ type: [GetSesioneDto] })
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.sesionesService.findOne(+id);
-  }
+  // @ApiBody({ type: GetSesioneDto })
+  // @Get(':id')
+  // findOne(@Param('id') id: string) {
+  //   return this.sesionesService.findOne(+id);
+  // }
 
-  @ApiBody({ type: CreateSesioneDto })
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateSesioneDto: UpdateSesioneDto) {
-    return this.sesionesService.update(+id, updateSesioneDto);
-  }
+  // @ApiBody({ type: CreateSesioneDto })
+  // @Patch(':id')
+  // update(@Param('id') id: string, @Body() updateSesioneDto: UpdateSesioneDto) {
+  //   return this.sesionesService.update(+id, updateSesioneDto);
+  // }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
+  @Delete(':id_usuario')
+  remove(@Param('id_usuario') id: string) {
     return this.sesionesService.remove(+id);
   }
 }

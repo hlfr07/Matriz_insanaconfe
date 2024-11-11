@@ -210,4 +210,92 @@ export class DetallePermisosService {
 
     return { message: 'DetallePermiso eliminado correctamente' };
   }
+
+  async buscarPermisosperfil(detalleperfil: any) {
+    //primero estraemos todos los permisos
+    const permisos = await this.detallePermisoRepository.find({
+      where: {
+        estado: true
+      }
+    });
+
+    //ahora recorremos un foreach el detalleperfil para extraer el perfil
+    const perfilesEncontrados = [];
+    const moduloEncontrados = [];
+    const tablaEncontrados = [];
+    //aca recorremos permisos para extraer los permisos
+    permisos.forEach(permiso => {
+      if (permiso.perfil.id === detalleperfil.id) {
+        perfilesEncontrados.push(permiso.perfil);
+        moduloEncontrados.push(permiso.modulo);
+        const tablaConPermiso = {
+          tabla: permiso.tabla,
+          permiso: {
+            get: permiso.get,
+            post: permiso.post,
+            put: permiso.put,
+            delete: permiso.delete
+          }
+        };
+        tablaEncontrados.push(tablaConPermiso);
+      }
+    });
+
+    // console.log("--------------------PERMISOS ANTES-------------------");
+    // console.log(perfilesEncontrados);
+    // console.log(moduloEncontrados);
+    // console.log(tablaEncontrados);
+    // console.log("-------------------- FIN PERMISOS ANTES-------------------");
+
+    //antes de retornar nos aeguraremos que modulos y perfiles no tengan datos repetidos, comprueba usando el id
+    const modulos = moduloEncontrados.filter((valor, indiceActual, arreglo) => arreglo.findIndex(modulo => modulo.id === valor.id) === indiceActual);
+    const perfiles = perfilesEncontrados.filter((valor, indiceActual, arreglo) => arreglo.findIndex(perfil => perfil.id === valor.id) === indiceActual);
+    //si existe tabla repetida actualizamos los permiso.get o permiso.post o permiso.delete o permiso.put que esten en true, osea si una tabla repetida tiene un permiso en true, se actualiza a true
+    const tablasFiltradas = [];
+
+    tablaEncontrados.forEach(tabla => {
+      let existe = false;
+
+      tablasFiltradas.forEach(tablaFiltrada => {
+        //console.log(tablaFiltrada.tabla.id, tabla.tabla.id);
+        if (tablaFiltrada.tabla.id === tabla.tabla.id) {
+          existe = true;
+          //si existe actualizamos los permiso.get o permiso.post o permiso.delete o permiso.put que esten en true
+          if (tabla.permiso.get) {
+            tablaFiltrada.permiso.get = true;
+            //console.log(tablaFiltrada.permiso.get);
+          }
+          if (tabla.permiso.post) {
+            tablaFiltrada.permiso.post = true;
+            //console.log(tablaFiltrada.permiso.post);
+          }
+          if (tabla.permiso.delete) {
+            tablaFiltrada.permiso.delete = true;
+            //console.log(tablaFiltrada.permiso.delete);
+          }
+          if (tabla.permiso.put) {
+            tablaFiltrada.permiso.put = true;
+            //console.log(tablaFiltrada.permiso.put);
+          }
+        }
+      });
+
+      if (!existe) {
+        tablasFiltradas.push(tabla);
+      }
+    });
+
+    // console.log("--------------------PERMISOS DESPUES-------------------");
+    // console.log(modulos);
+    // console.log(perfiles);
+    // console.log(tablasFiltradas);
+    // console.log("-------------------- FIN PERMISOS DESPUES-------------------");
+
+    return {
+      modulos: modulos,
+      perfiles: perfiles,
+      tablas: tablasFiltradas
+    };
+
+  }
 }

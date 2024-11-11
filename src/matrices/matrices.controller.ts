@@ -22,7 +22,7 @@ export class MatricesController {
     return this.matricesService.findAll();
   }
 
-  @ApiBody({ type: [GetMatrixDto] })
+  @ApiBody({ type: GetMatrixDto })
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.matricesService.findOne(+id);

@@ -11,11 +11,12 @@ import { UpdatePasswordCodeUsuarioDto } from './dto/updatepasswordcode-usuarios.
 import { ModulosService } from '../modulos/modulos.service';
 import { TablasService } from '../tablas/tablas.service';
 import { Perfile } from 'src/perfiles/entities/perfile.entity';
+import { DetallePermisosService } from 'src/detalle_permisos/detalle_permisos.service';
+import { Sesione } from 'src/sesiones/entities/sesione.entity';
 
 @Injectable()
 export class UsuariosService {
-  constructor(@InjectRepository(Usuario) private usuarioRepository: Repository<Usuario>, private readonly mailService: MailService, private readonly modulos: ModulosService, private readonly tablas: TablasService, @InjectRepository(Perfile) private perfileRepository: Repository<Perfile>
-  ) { }
+  constructor(@InjectRepository(Usuario) private usuarioRepository: Repository<Usuario>, private readonly mailService: MailService, @InjectRepository(Perfile) private perfileRepository: Repository<Perfile>, private readonly detallePermisos: DetallePermisosService, @InjectRepository(Sesione) private sesionRepository: Repository<Sesione>) { }
   async create(createUsuarioDto: CreateUsuarioDto) {
     const dniEncontrado = await this.usuarioRepository.findOneBy({
       dni: createUsuarioDto.dni
@@ -62,6 +63,14 @@ export class UsuariosService {
     });
 
     await this.usuarioRepository.save(nuevoUsuario);
+
+    //ahora creamos una sesion para el usuario con estado false
+    const nuevaSesion = this.sesionRepository.create({
+      usuario: nuevoUsuario,
+      estado: false
+    });
+
+    await this.sesionRepository.save(nuevaSesion);
 
     return nuevoUsuario;
   }
@@ -304,53 +313,34 @@ export class UsuariosService {
     });
   }
 
-  // async buscarpermisosporidusuario(id: number) {
-  //   console.log("ID DE MI USUARIO", id);
-  //   //buscamos los perfiles que le corresponde a cada usuario
-  //   const detallePerfiles = await this.detallePerfiles.buscarperfilesporidusuario(id);
+  async buscarpermisosporidusuario(id: number) {
+    //console.log("ID DE MI USUARIO", id);
+    const usuarioEncontrado = await this.usuarioRepository.findOneBy({
+      id: id
+    });
 
-  //   //ahora haremos un foreach para recorrer el detallePerfiles y extraer el perfil
-  //   const perfilesEncontrados = [];
+    if (!usuarioEncontrado) {
+      throw new HttpException('Usuario no encontrado', HttpStatus.NOT_FOUND);
+    }
+    //buscamos los perfiles que le corresponde a cada usuario
 
-  //   detallePerfiles.forEach(detallePerfiles => {
-  //     perfilesEncontrados.push(detallePerfiles.perfil);
-  //   });
+    //console.log("USUARIO", usuarioEncontrado.perfil);
+    const perfilUsuario = usuarioEncontrado.perfil;
 
+    //recorremos con un foreach al detallePerfiles para extraer el permisos usando el servicio de permisos
+    const permisos = await this.detallePermisos.buscarPermisosperfil(perfilUsuario);
 
-  //   //ahora verificamos que el perfiles no haya repetidos
+    //console.log(permisos);
 
-  //   const perfiles = perfilesEncontrados.filter((valor, indiceActual, arreglo) => arreglo.findIndex((perfil) => perfil.id === valor.id) === indiceActual);
+    const payload = {
+      usuario: usuarioEncontrado,
+      perfiles: permisos.perfiles,
+      modulos: permisos.modulos,
+      tablas: permisos.tablas
+    };
 
-  //   //console.log(perfiles);
+    //console.log("PERMISOS DE MI USUARIO", payload);
 
-
-  //   //console.log(detallePerfiles);
-
-
-  //   const detalleModulo = await this.detalleModulosPerfiles.buscarModulosPorPerfil(detallePerfiles);
-  //   //verificamos si el detalleModulo tiene datos
-
-  //   //console.log(detalleModulo);
-
-
-  //   const detalleModulotablas = await this.detalleModulosTablas.buscartablaspormodulo(detalleModulo);
-
-  //   //console.log(detalleModulotablas);
-
-  //   const modulos = await this.modulos.buscarModulos(detalleModulotablas);
-
-  //   //console.log(modulos);
-
-  //   const tablas = await this.tablas.buscarTablas(detalleModulotablas);
-
-  //   // console.log(tablas);
-
-  //   const payload = {
-  //     perfiles: perfiles,
-  //     modulos: modulos,
-  //     tablas: tablas
-  //   };
-
-  //   return payload;
-  // }
+    return payload;
+  }
 }

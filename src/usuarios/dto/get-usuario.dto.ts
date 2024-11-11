@@ -14,5 +14,7 @@ export class GetUsuarioDto {
     @ApiProperty()
     password: string;
     @ApiProperty()
+    perfil: any;
+    @ApiProperty()
     estado: boolean;
 }

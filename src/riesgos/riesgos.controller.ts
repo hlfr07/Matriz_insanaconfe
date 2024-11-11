@@ -22,7 +22,7 @@ export class RiesgosController {
     return this.riesgosService.findAll();
   }
 
-  @ApiBody({ type: [GetRiesgoDto] })
+  @ApiBody({ type: GetRiesgoDto })
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.riesgosService.findOne(+id);

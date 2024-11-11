@@ -15,31 +15,39 @@ export class PerfilesController {
 
   @ApiBody({ type: CreatePerfileDto })
   @Post()
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('perfiles', 'post')
   create(@Body() createPerfileDto: CreatePerfileDto) {
     return this.perfilesService.create(createPerfileDto);
   }
 
   @ApiBody({ type: [GetPerfileDto] })
   @Get()
-  // @UseGuards(JwtAuthGuard, RolesGuard)
-  // @Roles('perfiles', 'get') // Usuarios con rol 'admin' o 'user' pueden ver todos 
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('perfiles', 'get')
   findAll() {
     return this.perfilesService.findAll();
   }
 
   @ApiBody({ type: GetPerfileDto })
   @Get(':id')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('perfiles', 'get')
   findOne(@Param('id') id: string) {
     return this.perfilesService.findOne(+id);
   }
 
   @ApiBody({ type: CreatePerfileDto }) //se usa el create para el body
   @Patch(':id')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('perfiles', 'put')
   update(@Param('id') id: string, @Body() updatePerfileDto: UpdatePerfileDto) {
     return this.perfilesService.update(+id, updatePerfileDto);
   }
 
   @Delete(':id')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('perfiles', 'delete')
   remove(@Param('id') id: string) {
     return this.perfilesService.remove(+id);
   }

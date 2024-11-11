@@ -7,10 +7,12 @@ import { MailModule } from '../mail/mail.module';
 import { TablasModule } from '../tablas/tablas.module';
 import { ModulosModule } from '../modulos/modulos.module';
 import { Perfile } from 'src/perfiles/entities/perfile.entity';
+import { DetallePermisosModule } from 'src/detalle_permisos/detalle_permisos.module';
+import { Sesione } from 'src/sesiones/entities/sesione.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Usuario, Perfile]), MailModule,
-    TablasModule, ModulosModule
+  imports: [TypeOrmModule.forFeature([Usuario, Perfile, Sesione]), MailModule,
+    TablasModule, ModulosModule, DetallePermisosModule
   ],
   controllers: [UsuariosController],
   providers: [UsuariosService],

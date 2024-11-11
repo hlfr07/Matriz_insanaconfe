@@ -5,9 +5,11 @@ import { UsuariosModule } from 'src/usuarios/usuarios.module';
 import { JwtModule } from '@nestjs/jwt';
 import { ModulosModule } from '../modulos/modulos.module';
 import { TablasModule } from '../tablas/tablas.module';
+import { DetallePermisosModule } from 'src/detalle_permisos/detalle_permisos.module';
+import { SesionesModule } from 'src/sesiones/sesiones.module';
 
 @Module({
-  imports: [TablasModule ,ModulosModule,UsuariosModule, JwtModule.register({
+  imports: [DetallePermisosModule,TablasModule ,ModulosModule,UsuariosModule, SesionesModule, JwtModule.register({
     global: true,
   })],
   controllers: [AuthController],

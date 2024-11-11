@@ -87,23 +87,78 @@ export class SesionesService {
   }
 
   async remove(id: number) {
-    const sesioneEncontrada = await this.sesioneRepository.findOneBy({
-      id: id,
-      estado: true
+    // const sesioneEncontrada = await this.sesioneRepository.findOneBy({
+    //   id: id,
+    //   estado: true
+    // });
+
+    // if (!sesioneEncontrada) {
+    //   throw new HttpException('Sesione no encontrada', HttpStatus.NOT_FOUND);
+    // }
+
+    // if (!sesioneEncontrada.estado) {
+    //   throw new HttpException('Sesione no encontrada', HttpStatus.NOT_FOUND);
+    // }
+
+    // await this.sesioneRepository.update(id, {
+    //   estado: false
+    // });
+
+    const sesiones = await this.sesioneRepository.find({
     });
 
-    if (!sesioneEncontrada) {
-      throw new HttpException('Sesione no encontrada', HttpStatus.NOT_FOUND);
-    }
+    //recorremos las sesiones para extraer el id de la sesion
+    let idSesion = 0;
 
-    if (!sesioneEncontrada.estado) {
-      throw new HttpException('Sesione no encontrada', HttpStatus.NOT_FOUND);
-    }
+    sesiones.forEach(sesion => {
+      if (sesion.usuario.id === id) {
+        idSesion = sesion.id;
+      }
+    });
 
-    await this.sesioneRepository.update(id, {
+    await this.sesioneRepository.update(idSesion, {
       estado: false
     });
 
-    return { message: 'Sesione eliminada correctamente' };
+    return { message: 'Sesione finalizada correctamente' };
+  }
+
+  async buscarSesionesPorUsuario(id_usuario: number) {
+    const sesiones = await this.sesioneRepository.find({
+    });
+
+    //recorremos las sesiones para buscar el usuario
+    let sesionesUsuario = false;
+
+    sesiones.forEach(sesion => {
+      if (sesion.usuario.id === id_usuario) {
+        console.log("SESION", sesion.estado);
+        if (sesion.estado) {
+          sesionesUsuario = true;
+        }
+      }
+    });
+
+    console.log("SESIONES USUARIO", sesionesUsuario);
+
+    return sesionesUsuario;
+  }
+
+  async activarSesionesPorUsuario(id_usuario: number) {
+    const sesiones = await this.sesioneRepository.find({
+    });
+
+    //recorremos las sesiones para extraer el id de la sesion
+    let idSesion = 0;
+
+    sesiones.forEach(sesion => {
+      if (sesion.usuario.id === id_usuario) {
+        idSesion = sesion.id;
+      }
+    });
+
+    await this.sesioneRepository.update(idSesion, {
+      estado: true
+    });
   }
 }

@@ -22,7 +22,7 @@ export class MatrizValoresController {
     return this.matrizValoresService.findAll();
   }
 
-  @ApiBody({ type: [GetMatrizValoresDto] })
+  @ApiBody({ type: GetMatrizValoresDto })
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.matrizValoresService.findOne(+id);
