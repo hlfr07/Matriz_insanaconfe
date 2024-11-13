@@ -65,10 +65,16 @@ export class UsuariosService {
     await this.usuarioRepository.save(nuevoUsuario);
 
     //ahora creamos una sesion para el usuario con estado false
+    const now = new Date();
+    const horaLocal = now.toLocaleTimeString('en-PE', { hour12: false }); // Formato de 24 horas en Perú
+
     const nuevaSesion = this.sesionRepository.create({
+      fecha: now,
+      hora: horaLocal,
       usuario: nuevoUsuario,
       estado: false
     });
+
 
     await this.sesionRepository.save(nuevaSesion);
 
