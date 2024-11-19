@@ -5,11 +5,12 @@ import { Evento } from './entities/evento.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Matrix } from 'src/matrices/entities/matrix.entity';
+import { Usuario } from 'src/usuarios/entities/usuario.entity';
 
 @Injectable()
 export class EventosService {
 
-  constructor(@InjectRepository(Evento) private eventoRepository: Repository<Evento>, @InjectRepository(Matrix) private matrixRepository: Repository<Matrix>) { }
+  constructor(@InjectRepository(Evento) private eventoRepository: Repository<Evento>, @InjectRepository(Matrix) private matrixRepository: Repository<Matrix>, @InjectRepository(Usuario) private usuarioRepository: Repository<Usuario>) { }
 
   async create(createEventoDto: CreateEventoDto) {
     const EventoEncontrado = await this.eventoRepository.findOneBy({
@@ -28,6 +29,14 @@ export class EventosService {
       throw new HttpException('Matriz no encontrada', HttpStatus.NOT_FOUND);
     }
 
+    const UsuarioEncontrado = await this.usuarioRepository.findOneBy({
+      id: parseInt(createEventoDto.usuario_id)
+    });
+
+    if (!UsuarioEncontrado) {
+      throw new HttpException('Usuario no encontrado', HttpStatus.NOT_FOUND);
+    }
+
     const nuevoEvento = this.eventoRepository.create({
       evento: createEventoDto.evento,
       probabilidad: createEventoDto.probabilidad,
@@ -35,6 +44,7 @@ export class EventosService {
       valor: createEventoDto.valor,
       nivel_riesgo: createEventoDto.nivel_riesgo,
       matrix: MatrixEncontrado,
+      usuario: UsuarioEncontrado,
     });
 
     await this.eventoRepository.save(nuevoEvento);
@@ -95,6 +105,14 @@ export class EventosService {
       throw new HttpException('Matriz no encontrada', HttpStatus.NOT_FOUND);
     }
 
+    const UsuarioEncontrado = await this.usuarioRepository.findOneBy({
+      id: parseInt(updateEventoDto.usuario_id)
+    });
+
+    if (!UsuarioEncontrado) {
+      throw new HttpException('Usuario no encontrado', HttpStatus.NOT_FOUND);
+    }
+
     await this.eventoRepository.update(id, {
       evento: updateEventoDto.evento,
       probabilidad: updateEventoDto.probabilidad,
@@ -102,6 +120,7 @@ export class EventosService {
       valor: updateEventoDto.valor,
       nivel_riesgo: updateEventoDto.nivel_riesgo,
       matrix: MatrixEncontrado,
+      usuario: UsuarioEncontrado,
     });
 
     return { message: 'Evento actualizado correctamente' };

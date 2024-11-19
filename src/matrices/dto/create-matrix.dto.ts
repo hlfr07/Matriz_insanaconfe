@@ -3,13 +3,6 @@ import { Transform } from "class-transformer";
 import { IsNotEmpty, IsString, Max, MaxLength, MinLength } from "class-validator";
 
 export class CreateMatrixDto {
-    @ApiProperty()
-    @Transform(({ value }) => typeof value === 'string' ? value.trim() : value)
-    @IsNotEmpty({ message: 'La empresa no puede estar vacía' })
-    @IsString({ message: 'La empresa debe ser un texto' })
-    @MaxLength(50, { message: 'La empresa debe tener menos de 50 caracteres' })
-    @MinLength(3, { message: 'La empresa debe tener más de 3 caracteres' })
-    empresa: string;
 
     @ApiProperty()
     @Transform(({ value }) => typeof value === 'string' ? value.trim() : value)
@@ -53,9 +46,9 @@ export class CreateMatrixDto {
 
     @ApiProperty()
     @Transform(({ value }) => typeof value === 'string' ? value.trim() : value)
-    @IsNotEmpty({ message: 'El usuario no puede estar vacío' })
-    @IsString({ message: 'El usuario debe ser un texto' })
-    @MaxLength(100, { message: 'El usuario debe tener menos de 100 caracteres' })
-    @MinLength(1, { message: 'El usuario debe tener más de 1 caracteres' })
-    id_usuario: string;
+    @IsNotEmpty({ message: 'La empresa no puede estar vacío' })
+    @IsString({ message: 'La empresa debe ser un texto' })
+    @MaxLength(100, { message: 'La empresa debe tener menos de 100 caracteres' })
+    @MinLength(1, { message: 'La empresa debe tener más de 1 caracteres' })
+    id_empresa: string;
 }

@@ -1,4 +1,5 @@
 import { Matrix } from "src/matrices/entities/matrix.entity";
+import { Usuario } from "src/usuarios/entities/usuario.entity";
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({ name: 'eventos' })
@@ -24,6 +25,10 @@ export class Evento {
     @ManyToOne(() => Matrix, matrix => matrix.id, { eager: true })
     @JoinColumn({ name: 'matrix_id' })
     matrix: Matrix;
+
+    @ManyToOne(() => Usuario, usuario => usuario.id, { eager: true })
+    @JoinColumn({ name: 'usuario_id' })
+    usuario: Usuario;
 
     @Column({ default: true })
     estado: boolean;

@@ -17,6 +17,7 @@ import { MatricesModule } from './matrices/matrices.module';
 import { EventosModule } from './eventos/eventos.module';
 import { MatrizValoresModule } from './matriz_valores/matriz_valores.module';
 import { DetallePermisosModule } from './detalle_permisos/detalle_permisos.module';
+import { EmpresasModule } from './empresas/empresas.module';
 
 @Module({
   imports: [
@@ -48,6 +49,7 @@ import { DetallePermisosModule } from './detalle_permisos/detalle_permisos.modul
     EventosModule,
     MatrizValoresModule,
     DetallePermisosModule,
+    EmpresasModule,
   ],
   controllers: [AppController],
   providers: [AppService, MailService],

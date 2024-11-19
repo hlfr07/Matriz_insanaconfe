@@ -13,10 +13,11 @@ import { TablasService } from '../tablas/tablas.service';
 import { Perfile } from 'src/perfiles/entities/perfile.entity';
 import { DetallePermisosService } from 'src/detalle_permisos/detalle_permisos.service';
 import { Sesione } from 'src/sesiones/entities/sesione.entity';
+import { Empresa } from 'src/empresas/entities/empresa.entity';
 
 @Injectable()
 export class UsuariosService {
-  constructor(@InjectRepository(Usuario) private usuarioRepository: Repository<Usuario>, private readonly mailService: MailService, @InjectRepository(Perfile) private perfileRepository: Repository<Perfile>, private readonly detallePermisos: DetallePermisosService, @InjectRepository(Sesione) private sesionRepository: Repository<Sesione>) { }
+  constructor(@InjectRepository(Usuario) private usuarioRepository: Repository<Usuario>, private readonly mailService: MailService, @InjectRepository(Perfile) private perfileRepository: Repository<Perfile>, private readonly detallePermisos: DetallePermisosService, @InjectRepository(Sesione) private sesionRepository: Repository<Sesione>, @InjectRepository(Empresa) private empresaRepository: Repository<Empresa>) { }
   async create(createUsuarioDto: CreateUsuarioDto) {
     const dniEncontrado = await this.usuarioRepository.findOneBy({
       dni: createUsuarioDto.dni
@@ -51,6 +52,15 @@ export class UsuariosService {
       throw new HttpException('El usuario ya existe', HttpStatus.BAD_REQUEST);
     }
 
+    //buscamos la empresa por el id 
+    const empresaEncontrada = await this.empresaRepository.findOneBy({
+      id: parseInt(createUsuarioDto.id_empresa)
+    });
+
+    if (!empresaEncontrada) {
+      throw new HttpException('Empresa no encontrada', HttpStatus.NOT_FOUND);
+    }
+
     //ahora pasamos a crear el usuario pero con el password encriptado
     const nuevoUsuario = this.usuarioRepository.create({
       dni: createUsuarioDto.dni,
@@ -59,7 +69,8 @@ export class UsuariosService {
       email: createUsuarioDto.email,
       usuario: createUsuarioDto.usuario,
       password: await bcryptjs.hash(createUsuarioDto.password, 10),
-      perfil: perfilEncontrado
+      perfil: perfilEncontrado,
+      empresa: empresaEncontrada
     });
 
     await this.usuarioRepository.save(nuevoUsuario);
@@ -123,6 +134,15 @@ export class UsuariosService {
       throw new HttpException('Perfil no encontrado', HttpStatus.NOT_FOUND);
     }
 
+    //empresa encontrada
+    const empresaEncontrada = await this.empresaRepository.findOneBy({
+      id: parseInt(updateUsuarioDto.id_empresa)
+    });
+
+    if (!empresaEncontrada) {
+      throw new HttpException('Empresa no encontrada', HttpStatus.NOT_FOUND);
+    }
+
     //comprobar la existencia del dni, usuario, email con el mismo nombre solo si el nombre es diferente
     if (updateUsuarioDto.dni !== usuarioEncontrado.dni) {
       const dniEncontrado = await this.usuarioRepository.findOneBy({
@@ -161,7 +181,8 @@ export class UsuariosService {
       email: updateUsuarioDto.email,
       usuario: updateUsuarioDto.usuario,
       password: usuarioEncontrado.password,
-      perfil: perfilEncontrado
+      perfil: perfilEncontrado,
+      empresa: empresaEncontrada
     });
 
     return { message: 'Usuario actualizado correctamente' };

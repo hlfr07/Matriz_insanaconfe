@@ -16,5 +16,7 @@ export class GetEventoDto {
     @ApiProperty()
     matrix: any;
     @ApiProperty()
+    usuario: any;
+    @ApiProperty()
     estado: boolean;
 }

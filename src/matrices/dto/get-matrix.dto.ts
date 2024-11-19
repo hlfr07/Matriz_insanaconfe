@@ -4,8 +4,6 @@ export class GetMatrixDto {
     @ApiProperty()
     id: number;
     @ApiProperty()
-    empresa: string;
-    @ApiProperty()
     nombre: string;
     @ApiProperty()
     filas: number;
@@ -16,7 +14,7 @@ export class GetMatrixDto {
     @ApiProperty()
     hora: string;
     @ApiProperty()
-    usuario: any;
+    empresa: any;
     @ApiProperty()
     estado: boolean;
 }

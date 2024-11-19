@@ -16,5 +16,7 @@ export class GetUsuarioDto {
     @ApiProperty()
     perfil: any;
     @ApiProperty()
+    empresa: any;
+    @ApiProperty()
     estado: boolean;
 }

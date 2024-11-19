@@ -5,13 +5,13 @@ import { Matrix } from './entities/matrix.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Usuario } from 'src/usuarios/entities/usuario.entity';
+import { Empresa } from 'src/empresas/entities/empresa.entity';
 
 @Injectable()
 export class MatricesService {
-  constructor(@InjectRepository(Matrix) private matrixRepository: Repository<Matrix>, @InjectRepository(Usuario) private usuarioRepository: Repository<Usuario>) { }
+  constructor(@InjectRepository(Matrix) private matrixRepository: Repository<Matrix>, @InjectRepository(Empresa) private empresaRepository: Repository<Empresa>) { }
   async create(createMatrixDto: CreateMatrixDto) {
     const matrixEncontrado = await this.matrixRepository.findOneBy({
-      empresa: createMatrixDto.empresa,
       nombre: createMatrixDto.nombre,
     });
 
@@ -19,22 +19,21 @@ export class MatricesService {
       throw new HttpException('La matriz ya existe', HttpStatus.CONFLICT);
     }
 
-    const usuarioEncontrado = await this.usuarioRepository.findOneBy({
-      id: parseInt(createMatrixDto.id_usuario)
+    const empresEncontrado = await this.empresaRepository.findOneBy({
+      id: parseInt(createMatrixDto.id_empresa)
     });
 
-    if (!usuarioEncontrado) {
+    if (!empresEncontrado) {
       throw new HttpException('Usuario no encontrado', HttpStatus.NOT_FOUND);
     }
 
     const nuevaMatrix = this.matrixRepository.create({
-      empresa: createMatrixDto.empresa,
       nombre: createMatrixDto.nombre,
       filas: parseInt(createMatrixDto.filas),
       columnas: parseInt(createMatrixDto.columnas),
       fecha: createMatrixDto.fecha,
       hora: createMatrixDto.hora,
-      usuario: usuarioEncontrado,
+      empresa: empresEncontrado,
     });
 
     //guardamos y retornamos el la nueva matriz
@@ -89,22 +88,21 @@ export class MatricesService {
       }
     }
 
-    const usuarioEncontrado = await this.usuarioRepository.findOneBy({
-      id: parseInt(updateMatrixDto.id_usuario)
+    const empresaEncontrado = await this.empresaRepository.findOneBy({
+      id: parseInt(updateMatrixDto.id_empresa)
     });
 
-    if (!usuarioEncontrado) {
+    if (!empresaEncontrado) {
       throw new HttpException('Usuario no encontrado', HttpStatus.NOT_FOUND);
     }
 
     await this.matrixRepository.update(id, {
-      empresa: updateMatrixDto.empresa,
       nombre: updateMatrixDto.nombre,
       filas: parseInt(updateMatrixDto.filas),
       columnas: parseInt(updateMatrixDto.columnas),
       fecha: updateMatrixDto.fecha,
       hora: updateMatrixDto.hora,
-      usuario: usuarioEncontrado
+      empresa: empresaEncontrado
     });
 
     return { message: 'Matriz actualizada correctamente' };
