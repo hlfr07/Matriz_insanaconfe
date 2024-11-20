@@ -8,7 +8,7 @@ export class Empresa {
     @Column({ unique: true, nullable: false })
     empresa: string;
 
-    @Column({ nullable: true })
+    @Column({ default: true })
     estado: boolean;
 
 }
