@@ -66,8 +66,7 @@ export class UsuariosController {
   }
 
   @ApiBody({ type: GetPermisosPorIdUsuarioDto })
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('usuarios', 'get')
+  @UseGuards(JwtAuthGuard)
   @Get('/permisosporidusuario/:id')
   buscarpermisosporidusuario(@Param('id') id: string) {
     return this.usuariosService.buscarpermisosporidusuario(+id);
