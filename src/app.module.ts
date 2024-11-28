@@ -18,6 +18,7 @@ import { EventosModule } from './eventos/eventos.module';
 import { MatrizValoresModule } from './matriz_valores/matriz_valores.module';
 import { DetallePermisosModule } from './detalle_permisos/detalle_permisos.module';
 import { EmpresasModule } from './empresas/empresas.module';
+import { MitigacionesModule } from './mitigaciones/mitigaciones.module';
 
 @Module({
   imports: [
@@ -50,6 +51,7 @@ import { EmpresasModule } from './empresas/empresas.module';
     MatrizValoresModule,
     DetallePermisosModule,
     EmpresasModule,
+    MitigacionesModule,
   ],
   controllers: [AppController],
   providers: [AppService, MailService],
