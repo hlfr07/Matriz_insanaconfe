@@ -23,16 +23,14 @@ export class PerfilesController {
 
   @ApiBody({ type: [GetPerfileDto] })
   @Get()
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('perfiles', 'get')
+  @UseGuards(JwtAuthGuard)
   findAll() {
     return this.perfilesService.findAll();
   }
 
   @ApiBody({ type: GetPerfileDto })
   @Get(':id')
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('perfiles', 'get')
+  @UseGuards(JwtAuthGuard)
   findOne(@Param('id') id: string) {
     return this.perfilesService.findOne(+id);
   }

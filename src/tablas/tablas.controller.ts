@@ -11,7 +11,7 @@ import { RolesGuard } from '../auth/roles/roles.guard';
 @ApiTags('Tablas')
 @Controller('tablas')
 export class TablasController {
-  constructor(private readonly tablasService: TablasService) {}
+  constructor(private readonly tablasService: TablasService) { }
 
   @ApiBody({ type: CreateTablaDto })
   @Post()
@@ -22,18 +22,15 @@ export class TablasController {
   }
 
   @ApiBody({ type: [GetTablaDto] })
-  
   @Get()
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('tablas', 'get')
+  @UseGuards(JwtAuthGuard)
   findAll() {
     return this.tablasService.findAll();
   }
 
   @ApiBody({ type: GetTablaDto })
   @Get(':id')
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('tablas', 'post')
+  @UseGuards(JwtAuthGuard)
   findOne(@Param('id') id: string) {
     return this.tablasService.findOne(+id);
   }

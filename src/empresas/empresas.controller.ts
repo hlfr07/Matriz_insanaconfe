@@ -24,16 +24,14 @@ export class EmpresasController {
 
   @ApiBody({ type: [GetEmpresaDto]})
   @Get()
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('empresas', 'get')
+  @UseGuards(JwtAuthGuard)
   findAll() {
     return this.empresasService.findAll();
   }
 
   @ApiBody({ type: GetEmpresaDto })
   @Get(':id')
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('empresas', 'get')
+  @UseGuards(JwtAuthGuard)
   findOne(@Param('id') id: string) {
     return this.empresasService.findOne(+id);
   }

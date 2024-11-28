@@ -26,16 +26,14 @@ export class UsuariosController {
 
   @ApiBody({ type: [GetUsuarioDto] })
   @Get()
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('usuarios', 'get')
+  @UseGuards(JwtAuthGuard)
   findAll() {
     return this.usuariosService.findAll();
   }
 
   @ApiBody({ type: GetUsuarioDto })
   @Get(':id')
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('usuarios', 'get')
+  @UseGuards(JwtAuthGuard)
   findOne(@Param('id') id: string) {
     return this.usuariosService.findOne(+id);
   }

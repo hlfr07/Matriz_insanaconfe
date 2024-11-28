@@ -23,16 +23,14 @@ export class ModulosController {
 
   @ApiBody({ type: [GetModuloDto] })
   @Get()
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('modulos', 'get')
+  @UseGuards(JwtAuthGuard)
   findAll() {
     return this.modulosService.findAll();
   }
 
   @ApiBody({ type: GetModuloDto })
   @Get(':id')
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('modulos', 'get')
+  @UseGuards(JwtAuthGuard)
   findOne(@Param('id') id: string) {
     return this.modulosService.findOne(+id);
   }

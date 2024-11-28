@@ -23,16 +23,14 @@ export class EventosController {
 
   @ApiBody({ type: [GetEventoDto] })
   @Get()
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('eventos', 'get')
+  @UseGuards(JwtAuthGuard)
   findAll() {
     return this.eventosService.findAll();
   }
 
   @ApiBody({ type: [GetEventoDto] })
   @Get(':id')
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('eventos', 'get')
+  @UseGuards(JwtAuthGuard)
   findOne(@Param('id') id: string) {
     return this.eventosService.findOne(+id);
   }

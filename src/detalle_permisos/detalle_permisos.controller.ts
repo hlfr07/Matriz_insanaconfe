@@ -23,16 +23,14 @@ export class DetallePermisosController {
 
   @ApiBody({ type: [GetDetallePermisoDto] })
   @Get()
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('detalle-permisos', 'get')
+  @UseGuards(JwtAuthGuard)
   findAll() {
     return this.detallePermisosService.findAll();
   }
 
   @ApiBody({ type: GetDetallePermisoDto })
   @Get(':id')
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('detalle-permisos', 'get')
+  @UseGuards(JwtAuthGuard)
   findOne(@Param('id') id: string) {
     return this.detallePermisosService.findOne(+id);
   }

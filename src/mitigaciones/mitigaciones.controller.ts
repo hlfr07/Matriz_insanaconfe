@@ -12,7 +12,7 @@ import GetMitigacioneDto from './dto/get-mitigcione.dto';
 export class MitigacionesController {
   constructor(private readonly mitigacionesService: MitigacionesService) { }
 
-
+ 
 
   @ApiBody({ type: [GetMitigacioneDto] })
   @Get()

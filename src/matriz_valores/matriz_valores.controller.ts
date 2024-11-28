@@ -23,16 +23,14 @@ export class MatrizValoresController {
 
   @ApiBody({ type: [GetMatrizValoresDto] })
   @Get()
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('matriz-valores', 'get')
+  @UseGuards(JwtAuthGuard)
   findAll() {
     return this.matrizValoresService.findAll();
   }
 
   @ApiBody({ type: GetMatrizValoresDto })
   @Get(':id')
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('matriz-valores', 'get')
+  @UseGuards(JwtAuthGuard)
   findOne(@Param('id') id: string) {
     return this.matrizValoresService.findOne(+id);
   }

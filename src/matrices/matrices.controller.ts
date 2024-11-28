@@ -23,16 +23,14 @@ export class MatricesController {
 
   @ApiBody({ type: [GetMatrixDto] })
   @Get()
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('matrices', 'get')
+  @UseGuards(JwtAuthGuard)
   findAll() {
     return this.matricesService.findAll();
   }
 
   @ApiBody({ type: GetMatrixDto })
   @Get(':id')
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('matrices', 'get')
+  @UseGuards(JwtAuthGuard)
   findOne(@Param('id') id: string) {
     return this.matricesService.findOne(+id);
   }
